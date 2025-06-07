@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Senin İçin, Bebeğim <3</title>
+
+    <!-- Google Fonts - Özel Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Roboto&display=swap" rel="stylesheet">
+
+    <style>
+        /* Genel */
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #ffc1cc, #ff9ac1);
+            font-family: 'Roboto', sans-serif;
+            color: #fff;
+            text-align: center;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        /* Başlık */
+        h1 {
+            font-family: 'Pacifico', cursive;
+            font-size: 3.5rem;
+            margin-bottom: 0.2em;
+            text-shadow: 0 0 10px #ff5c8d;
+        }
+
+        /* Alt mesaj */
+        p {
+            font-size: 1.5rem;
+            margin-bottom: 1.5em;
+            text-shadow: 0 0 8px #ff7aa3;
+        }
+
+        /* Kalpler */
+        .heart {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: #ff5c8d;
+            transform: rotate(-45deg);
+            animation: floatUp 8s linear infinite;
+            cursor: pointer;
+            box-shadow: 0 0 8px #ff5c8d;
+        }
+
+        .heart::before,
+        .heart::after {
+            content: "";
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: #ff5c8d;
+            border-radius: 50%;
+        }
+
+        .heart::before {
+            top: -12.5px;
+            left: 0;
+        }
+
+        .heart::after {
+            top: 0;
+            left: 12.5px;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(-45deg);
+            }
+
+            100% {
+                opacity: 0;
+                transform: translateY(-350px) rotate(-45deg);
+            }
+        }
+
+        /* Mesaj kutusu */
+        #msg-box {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(255 92 141 / 0.9);
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-family: 'Pacifico', cursive;
+            font-size: 1.2rem;
+            color: #fff;
+            box-shadow: 0 0 12px #ff5c8d;
+            max-width: 280px;
+            display: none;
+            z-index: 9999;
+        }
+
+        #msg-box button {
+            margin-top: 8px;
+            background: #fff;
+            color: #ff5c8d;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        /* Buton */
+        #confetti-btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            border: none;
+            background: #ff5c8d;
+            color: #fff;
+            font-family: 'Pacifico', cursive;
+            font-size: 1.6rem;
+            box-shadow: 0 0 15px #ff5c8d;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 15px;
+        }
+
+        #confetti-btn:hover {
+            background: #ff3c6a;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            p {
+                font-size: 1.1rem;
+                margin: 1em 1em 2em;
+            }
+
+            #msg-box {
+                max-width: 90vw;
+                bottom: 5px;
+                right: 5px;
+                font-size: 1rem;
+            }
+
+            #confetti-btn {
+                font-size: 1.3rem;
+                padding: 10px 25px;
+                position: relative;
+                z-index: 10;
+            }
+        }
+
+       
+    </style>
+</head>
+
+<body>
+
+    <h1> Seni Çok Seviyorum </h1>
+    <p>Hayatımın en güzel sürprizi sensin!</p>
+
+  
+    <!-- Sürpriz mesaj kutusu -->
+    <div id="msg-box">
+        <div id="msg-text"></div>
+        <button onclick="closeMsg()">Kapat</button>
+    </div>
+
+    <!-- Konfeti butonu -->
+    <button id="confetti-btn">Seni Seviyorum 💌</button>
+
+    <!-- Romantik müzik -->
+    <audio id="love-audio" autoplay loop>
+        <source
+            src="https://cdn.pixabay.com/download/audio/2022/02/21/audio_07d3a67bd2.mp3?filename=romantic-music-13746.mp3"
+            type="audio/mpeg" />
+        Tarayıcı müziği desteklemiyor.
+    </audio>
+
+    <script>
+        // Fotoğraf slaytı
+        const slides = document.querySelectorAll('#slideshow img');
+        let current = 0;
+        function slideShow() {
+            slides[current].classList.remove('active');
+            current = (current + 1) % slides.length;
+            slides[current].classList.add('active');
+        }
+        setInterval(slideShow, 4000);
+
+        // Kalpler ve tıklanınca mesaj gösterme
+        const messages = [
+            "İlk tanıştığımız anı hiç unutamam 💕",
+            "Seninle her an bir masal gibi 🥰",
+            "Senin gülüşün, en güzel melodi 🎶",
+            "Sen benim hayatımın ışığısın ✨",
+            "Her zaman yanında olacağım, söz 💖"
+        ];
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.style.left = Math.random() * window.innerWidth + 'px';
+            heart.style.top = window.innerHeight + 'px';
+            heart.style.animationDuration = (6 + Math.random() * 4) + 's';
+
+            // Mesaj seçimi
+            heart.message = messages[Math.floor(Math.random() * messages.length)];
+
+            // Mesaj göster
+            heart.addEventListener('click', () => {
+                showMsg(heart.message);
+            });
+
+            document.body.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 11000);
+        }
+        setInterval(createHeart, 500);
+
+        // Mesaj kutusu fonksiyonları
+        const msgBox = document.getElementById('msg-box');
+        const msgText = document.getElementById('msg-text');
+        function showMsg(text) {
+            msgText.textContent = text;
+            msgBox.style.display = 'block';
+        }
+        function closeMsg() {
+            msgBox.style.display = 'none';
+        }
+
+        // Konfeti animasyonu (basit)
+        function createConfetti() {
+            const colors = ['#ff5c8d', '#ff9ac1', '#ffc1cc', '#ff3c6a', '#ffa3b1'];
+            for (let i = 0; i < 100; i++) {
+                const confetti = document.createElement('div');
+                confetti.style.position = 'fixed';
+                confetti.style.width = '8px';
+                confetti.style.height = '8px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.top = Math.random() * window.innerHeight + 'px';
+                confetti.style.left = Math.random() * window.innerWidth + 'px';
+                confetti.style.opacity = '0.9';
+                confetti.style.borderRadius = '3px';
+                confetti.style.pointerEvents = 'none';
+                confetti.style.animation = `confetti-fall 3s ease forwards`;
+                confetti.style.zIndex = 9999;
+                document.body.appendChild(confetti);
+
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        document.getElementById('confetti-btn').addEventListener('click', createConfetti);
+
+        // Confetti animation keyframes eklemek için style etiketi oluşturduk
+        const styleEl = document.createElement('style');
+        styleEl.textContent = `
+    @keyframes confetti-fall {
+      0% {transform: translateY(0) rotate(0deg); opacity: 1;}
+      100% {transform: translateY(150px) rotate(360deg); opacity: 0;}
+    }
+  `;
+        document.head.appendChild(styleEl);
+    </script>
+
+</body>
+
+</html>
